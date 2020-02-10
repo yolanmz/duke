@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
@@ -21,19 +22,26 @@ public class Duke {
         printWelcomeMessage();
         Scanner in = new Scanner(System.in);
         String input = in.nextLine();
-        String[] list = new String[100];
-        int listCounter = 0;
+        ArrayList<Task> taskList = new ArrayList<Task>();
         while(!input.equals("bye")){
-            if(input.equals("list")){
+            if(input.equals("list")) {
                 printSeparator();
                 System.out.println("list");
-                for(int i=0; i<listCounter;i++){
-                    System.out.println(i+1 + ". " +  list[i]);
+                for (int i = 0; i < taskList.size(); i++) {
+                    System.out.println(i + 1 + ". " + "[" + taskList.get(i).getStatusIcon() + "] " + taskList.get(i));
                 }
                 printSeparator();
+            }else if(input.startsWith("done")){
+                int doneIndex = Integer.parseInt(input.substring(5));
+                taskList.get(doneIndex-1).markAsDone();
+                printSeparator();
+                System.out.println("Nice! I've marked this task as done: ");
+                System.out.println("["+ taskList.get(doneIndex-1).getStatusIcon() + "] " + taskList.get(doneIndex-1).toString());
+                printSeparator();
+
             } else{
-                list[listCounter] = input;
-                listCounter++;
+                Task task = new Task(input);
+                taskList.add(task);
                 printSeparator();
                 System.out.println("added: " + input);
                 printSeparator();
